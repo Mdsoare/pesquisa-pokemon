@@ -7,6 +7,8 @@ Com essa Pokedex incrível, você pode:
 * **Buscar qualquer Pokémon:** Digite o nome do pokémon ou número da Pokedex e descubra tudo sobre ele!
 * **Ver as estatísticas:** Peso, altura, tipos e habilidades do seu Pokémon favorito.
 
+**Que tal começarmos essa jornada?** Clique [Aqui](https://mdsoare.github.io/pesquisa-pokemon/)
+
 ## Sobre o projeto
 
 Trata-se de uma interface web que consome a API do [PokéAPI](https://pokeapi.co/) onde é possível realizar uma busca por um determinado Pokémon ou Pokedex.
