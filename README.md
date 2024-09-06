@@ -1,4 +1,4 @@
-# <img src=./assets/img/logo.svg alt="Logotipo da Alura" title="Logo da Alura" width="7%"> A Pokedex mais legal do mundo!
+# A Pokedex mais legal do mundo!
 
 **Prepare-se para uma jornada épica pelo mundo Pokémon!**
 
