@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Página sobre a imersão em desenvolvimento com Gemini consumindo a API pokeapi.">
+    <meta name="keywords" content="imersão, desenvolvimento, Gemini, API">
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico">
+    <title>Imerção Dev com Gemini - Pokémon</title>
+</head>
+
+<body>
+    <header>
+        <h1>Busca Pokémon</h1>
+    </header>
+
+    <main>
+        <section class="pesquisa">
+            <input type="text" id="pesquisaPokemon" placeholder="Digite o nome do Pokémon" autocomplete="off">
+            <div class="botoes">
+                <button onclick="pesquisaPokemon()">Pesquisar</button>
+                <button onclick="clean()">Limpar</button>
+            </div>
+        </section>
+        <section class="resultados-pesquisa">
+            <div id="resultado"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            Desenvolvido por Marcelo Soares™. Todos os direitos reservados.
+            <a href="https://github.com/Mdsoare" target="_blank" title="Acesse meu GitHub">
+                <img src="assets/img/github.svg" alt='GitHub'>
+            </a>
+            <a href="https://www.linkedin.com/in/marcelodsoares/" target="_blank"
+                title="Acesse meu Linkedin">
+                <img src="assets/img/linkedin.svg" alt='Linkedin'>
+            </a>
+        </p>
+    </footer>
+
+    <script src="./assets/scripts/consultaApi.js"></script>
+    <script src="./assets/scripts/enterPesquisa.js"></script>
+    <script src="./assets/scripts/limpaPesquisa.js"></script>
+    <script src="./assets/scripts/escPesquisa.js"></script>
+</body>
+
+</html>
