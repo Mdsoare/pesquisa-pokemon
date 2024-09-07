@@ -1,9 +1,7 @@
 async function pesquisaPokemon() {
     const nomePokemon = document.getElementById('pesquisaPokemon').value.toLowerCase();
     
-    //Validando entrada:
-    if (!/^[a-z0-9]+$/.test(nomePokemon)) {
-        alert('Você deve digitar o nome do Pokémon ou o número da Pokedex.');
+    if (!validarPesquisa(nomePokemon)) { //valida entrada de dados da pesquisa
         clean();
         return;
       }
@@ -56,7 +54,6 @@ async function pesquisaPokemon() {
         }
     } catch (error) {
         const resultado = document.getElementById('resultado');
-        //resultado.textContent = `Erro: ${error.message}`; //imprime a mensagem de erro na tela
         alert(error.message);
         clean();
     }
