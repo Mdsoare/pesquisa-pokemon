@@ -5,26 +5,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="Página sobre a imersão em desenvolvimento com Gemini consumindo a API pokeapi.">
-    <meta name="keywords" content="imersão, desenvolvimento, Gemini, API">
+    <meta name="description" content="Página sobre a imersão em desenvolvimento consumindo a API pokeapi.">
+    <meta name="keywords" content="imersão, desenvolvimento, API">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/styles/styles.css">
-    <!-- <link rel="shortcut icon" href="./assets/img/favicon.ico"> -->
-    <title>Imerção Dev com Gemini - Pokémon</title>
+    <title>PokéSearch & Info Anime</title>
 </head>
 
 <body>
     <header>
-        <h1>Busca Pokémon</h1>
+        <h1><i class="fa-solid fa-bolt" style="color: #f39c12;"></i> PokéSearch</h1>
     </header>
 
     <main>
-        <section class="pesquisa">
-            <input type="text" id="pesquisaPokemon" placeholder="Digite o nome do Pokémon" autocomplete="off">
-            <div class="botoes">
-                <button onclick="pesquisaPokemon()">Pesquisar</button>
-                <button onclick="clean()">Limpar</button>
+        <section class="search-card-container">
+            <p>Consulte dados técnicos e curiosidades sobre Pokémon</p>
+            <div class="search-container">
+                <input type="text" id="pesquisaPokemon" placeholder="Digite o nome ou ID do Pokémon" autocomplete="off">
+                <div class="botoes">
+                    <button id="btnPesquisar"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
+                    <button id="btnLimpar"><i class="fa-solid fa-trash-can"></i> Limpar</button>
+                </div>
             </div>
         </section>
+
+        <div id="loader" class="loader"></div>
+        <div id="errorMessage" class="error-message"></div>
+
         <section class="resultados-pesquisa">
             <div id="resultado"></div>
         </section>
@@ -34,20 +45,17 @@
         <p>
             Desenvolvido por Marcelo Soares™. Todos os direitos reservados.
             <a href="https://github.com/Mdsoare" target="_blank" title="Acesse meu GitHub">
-                <img src="assets/img/github.svg" alt='GitHub'>
+                <i class="fa-brands fa-github"
+                    style="font-size: 1.3rem; margin-left: 12px; vertical-align: middle; color: #333;"></i>
             </a>
-            <a href="https://www.linkedin.com/in/marcelodsoares/" target="_blank"
-                title="Acesse meu Linkedin">
-                <img src="assets/img/linkedin.svg" alt='Linkedin'>
+            <a href="https://www.linkedin.com/in/marcelodsoares/" target="_blank" title="Acesse meu Linkedin">
+                <i class="fa-brands fa-linkedin"
+                    style="font-size: 1.3rem; margin-left: 8px; vertical-align: middle; color: #0077b5;"></i>
             </a>
         </p>
     </footer>
 
-    <script src="./assets/scripts/consultaApi.js"></script>
-    <script src="./assets/scripts/validaPesquisa.js"></script>
-    <script src="./assets/scripts/enterPesquisa.js"></script>
-    <script src="./assets/scripts/limpaPesquisa.js"></script>
-    <script src="./assets/scripts/escPesquisa.js"></script>
+    <script src="./assets/scripts/app.js"></script>
 </body>
 
 </html>
