@@ -1,5 +1,21 @@
 /**
  * =========================================================================
+ * 0. UTILITÁRIOS DE SEGURANÇA (AppSec Hardening)
+ * =========================================================================
+ */
+// Função para higienizar entradas e evitar a execução de scripts maliciosos (Anti-XSS)
+function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/**
+ * =========================================================================
  * 1. MAPEAMENTOS E DICIONÁRIOS GLOBAIS
  * =========================================================================
  */
@@ -12,15 +28,9 @@ const TRANSLATE_TYPES = {
 };
 
 const TRANSLATE_ABILITIES = {
-    static: 'Estático',
-    imposter: 'Impostor',
-    overgrow: 'Supercrescimento',
-    blaze: 'Chama',
-    torrent: 'Torrente',
-    'shield-dust': 'Poeira de Escudo',
-    'shed-skin': 'Troca de Pele',
-    'compound-eyes': 'Olhos Compostos',
-    insomnia: 'Insônia'
+    static: 'Estático', imposter: 'Impostor', overgrow: 'Supercrescimento',
+    blaze: 'Chama', torrent: 'Torrente', 'shield-dust': 'Poeira de Escudo',
+    'shed-skin': 'Troca de Pele', 'compound-eyes': 'Olhos Compostos', insomnia: 'Insônia'
 };
 
 const UNIT_CONVERSIONS = {
@@ -30,7 +40,7 @@ const UNIT_CONVERSIONS = {
 
 /**
  * =========================================================================
- * 2. MONITORES DE EVENTO (Listeners de Interface)
+ * 2. MONITORES DE EVENTO
  * =========================================================================
  */
 document.getElementById('btnPesquisar').addEventListener('click', executarBusca);
@@ -93,20 +103,26 @@ async function executarBusca() {
 
     if (!validarPesquisa(query)) return;
 
-    // Reset de estados da tela
     errorDiv.style.display = 'none';
     resultadoDiv.innerHTML = '';
     loader.style.display = 'block';
 
     try {
-        // Passo 1: Dados básicos primordiais da PokeAPI
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${query}`);
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(query)}`);
         if (!response.ok) throw new Error('Pokémon não localizado na base de dados global.');
         const pokemonData = await response.json();
 
-        // Passo 2 e 3 paralelizados para mitigar latência de rede
+        // Validação básica da URL retornada pela API externa
+        if (!pokemonData.species.url.startsWith('https://pokeapi.co/api/v2/')) {
+            throw new Error('Origem de API inválida.');
+        }
+
         const speciesResponse = await fetch(pokemonData.species.url);
         const speciesData = await speciesResponse.json();
+
+        if (!speciesData.evolution_chain.url.startsWith('https://pokeapi.co/api/v2/')) {
+            throw new Error('Origem de API inválida.');
+        }
 
         const evoResponse = await fetch(speciesData.evolution_chain.url);
         const evoData = await evoResponse.json();
@@ -122,14 +138,15 @@ async function executarBusca() {
 
 /**
  * =========================================================================
- * 4. RENDERIZAÇÃO E MANIPULAÇÃO DE DADO PARA A TELA (UI)
+ * 4. RENDERIZAÇÃO E MANIPULAÇÃO DE DADOS (Sanitizado)
  * =========================================================================
  */
 function renderizarCard(poke, species, evo) {
     const resultadoDiv = document.getElementById('resultado');
 
-    // Tratamento de traduções e strings limpas
-    const habilidadesTraduzidas = poke.abilities.map(a => TRANSLATE_ABILITIES[a.ability.name] || a.ability.name).join(', ');
+    const habilidadesTraduzidas = poke.abilities
+        .map(a => escapeHTML(TRANSLATE_ABILITIES[a.ability.name] || a.ability.name))
+        .join(', ');
 
     const categoriaPT = species.genera.find(g => g.language.name === 'pt');
     const textoDescricaoPT = species.flavor_text_entries.find(e => e.language.name === 'pt-BR' || e.language.name === 'pt');
@@ -141,24 +158,30 @@ function renderizarCard(poke, species, evo) {
     const cadeiaEvolutivaString = processarCadeiaEvolutiva(evo.chain);
     const loreAnime = buscarLoreAnime(poke.id);
 
-    // Gerando os Badges dos Tipos mapeando as classes CSS corretas
     const badgesHTML = poke.types.map(t => {
         const nomeTraduzido = TRANSLATE_TYPES[t.type.name] || t.type.name;
-        return `<span class="type-badge ${t.type.name}">${nomeTraduzido}</span>`;
+        return `<span class="type-badge ${escapeHTML(t.type.name)}">${escapeHTML(nomeTraduzido)}</span>`;
     }).join(' ');
+
+    const imgSrc = escapeHTML(poke.sprites.other['official-artwork'].front_default || poke.sprites.front_default);
+    const pokeName = escapeHTML(poke.name.toUpperCase());
+    const categoriaTexto = categoriaPT ? escapeHTML(categoriaPT.genus) : 'Desconhecida';
+    const descricaoTexto = textoDescricaoPT 
+        ? escapeHTML(textoDescricaoPT.flavor_text.replace(/[\n\f]/g, ' ')) 
+        : 'Sem descrição em português disponível.';
 
     resultadoDiv.innerHTML = `
         <div class="pokedex-card" style="display: block;">
             <div class="card-header">
-                <img class="pokemon-img" src="${poke.sprites.other['official-artwork'].front_default || poke.sprites.front_default}" alt="${poke.name}">
-                <h2 class="pokemon-name">#${poke.id} - ${poke.name.toUpperCase()}</h2>
+                <img class="pokemon-img" src="${imgSrc}" alt="${pokeName}">
+                <h2 class="pokemon-name">#${escapeHTML(poke.id)} - ${pokeName}</h2>
                 <div class="types-container">${badgesHTML}</div>
             </div>
             
             <div class="info-section">
                 <h3><i class="fa-solid fa-dna"></i> Dados Biológicos (PT-BR)</h3>
                 <div class="info-grid">
-                    <div class="info-item"><p><strong>Categoria:</strong> ${categoriaPT ? categoriaPT.genus : 'Desconhecida'}</p></div>
+                    <div class="info-item"><p><strong>Categoria:</strong> ${categoriaTexto}</p></div>
                     <div class="info-item"><p><strong>Habilidades:</strong> ${habilidadesTraduzidas}</p></div>
                     <div class="info-item"><p><strong>Peso:</strong> ${pesoFormatado} ${UNIT_CONVERSIONS.weight.unidadeConvertida}</p></div>
                     <div class="info-item"><p><strong>Altura:</strong> ${alturaFormatada} ${UNIT_CONVERSIONS.height.unidadeConvertida}</p></div>
@@ -168,9 +191,9 @@ function renderizarCard(poke, species, evo) {
             
             <div class="info-section">
                 <h3><i class="fa-solid fa-tv"></i> Registros do Anime & Lore</h3>
-                <p><strong>Primeira Aparição:</strong> ${loreAnime.appearance}</p>
-                <p><strong>Treinador Notável:</strong> ${loreAnime.trainer}</p>
-                <p class="mt-10"><strong>Descrição:</strong> <em>${textoDescricaoPT ? textoDescricaoPT.flavor_text.replace(/[\n\f]/g, ' ') : 'Sem descrição em português disponível.'}</em></p>
+                <p><strong>Primeira Aparição:</strong> ${escapeHTML(loreAnime.appearance)}</p>
+                <p><strong>Treinador Notável:</strong> ${escapeHTML(loreAnime.trainer)}</p>
+                <p class="mt-10"><strong>Descrição:</strong> <em>${descricaoTexto}</em></p>
             </div>
         </div>
     `;
@@ -183,7 +206,7 @@ function processarCadeiaEvolutiva(chain) {
         nos.push(atual.species.name);
         atual = atual.evolves_to[0];
     }
-    return nos.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(' ➔ ');
+    return nos.map(n => escapeHTML(n.charAt(0).toUpperCase() + n.slice(1))).join(' ➔ ');
 }
 
 function buscarLoreAnime(id) {
