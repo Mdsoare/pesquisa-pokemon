@@ -31,7 +31,7 @@ jobs:
   sca-osv:
     name: SCA (OSV-Scanner)
     uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.5.0"
-    //uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@main"
+    #uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@main"
     with:
       # Opcional: define qual nível de severidade falhará o build (ex: "high", "critical")
       results-file-level: "high"
