@@ -1,18 +1,21 @@
-name: DevSecOps SAST Scan
+name: DevSecOps Unified Security Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
 
-permissions:
-  contents: read
+permissions:  
+  actions: read
   security-events: write
+  contents: read
 
 jobs:
-  security-scan:
+  sast-codeql:
+    name: SAST (CodeQL Analysis)
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,3 +27,11 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+
+  sca-osv:
+    name: SCA (OSV-Scanner)
+    uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@v2.5.0"
+    //uses: "google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@main"
+    with:
+      # Opcional: define qual nível de severidade falhará o build (ex: "high", "critical")
+      results-file-level: "high"
