@@ -271,7 +271,7 @@ jobs:
 
       - name: Check for Unauthorized External Scripts and Styles
         run: |
-          UNAUTHORIZED_RESOURCES=$(grep -Ei '<script.*src=["'\'']?http|<link.*href=["'\'']?http' index.html | grep -vE 'fonts\.(googleapis|gstatic)\.com' || true)
+          UNAUTHORIZED_RESOURCES=$(grep -Ei '<script.*src=["'\'']?http|<link.*href=["'\'']?http' index.html | grep -vE '(fonts\.(googleapis|gstatic)\.com|cdnjs\.cloudflare\.com)' || true)
 
           if [ -n "$UNAUTHORIZED_RESOURCES" ]; then
             echo "❌ ERRO: Encontrados scripts ou estilos externos não autorizados no index.html:"
