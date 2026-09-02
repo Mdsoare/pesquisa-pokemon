@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Hardening: Content Security Policy (CSP) -->
+    <!-- Hardening: Content Security Policy (CSP) - Estrita sem 'unsafe-inline' -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         script-src 'self';
-        style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com 'unsafe-inline';
+        style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
         font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
         img-src 'self' https://raw.githubusercontent.com https://pokeapi.co data:;
         connect-src 'self' https://pokeapi.co;
@@ -21,13 +21,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./assets/styles/styles.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>PokéSearch & Info Anime</title>
 </head>
 
 <body>
     <header>
-        <h1><i class="fa-solid fa-bolt" style="color: #f39c12;"></i> PokéSearch</h1>
+        <h1><i class="fa-solid fa-bolt icon-header"></i> PokéSearch</h1>
     </header>
 
     <main>
@@ -36,8 +36,8 @@
             <div class="search-container">
                 <input type="text" id="pesquisaPokemon" placeholder="Digite o nome ou ID do Pokémon" autocomplete="off">
                 <div class="botoes">
-                    <button id="btnPesquisar"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
-                    <button id="btnLimpar"><i class="fa-solid fa-trash-can"></i> Limpar</button>
+                    <button id="btn-pesquisar"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
+                    <button id="btn-limpar"><i class="fa-solid fa-trash-can"></i> Limpar</button>
                 </div>
             </div>
         </section>
@@ -54,18 +54,16 @@
         <p>
             Desenvolvido por Marcelo Soares™. Todos os direitos reservados.
             <a href="https://github.com/Mdsoare" target="_blank" rel="noopener noreferrer" title="Acesse meu GitHub">
-                <i class="fa-brands fa-github"
-                    style="font-size: 1.3rem; margin-left: 12px; vertical-align: middle; color: #333;"></i>
+                <i class="fa-brands fa-github icon-social icon-github"></i>
             </a>
             <a href="https://www.linkedin.com/in/marcelodsoares/" target="_blank" rel="noopener noreferrer"
                 title="Acesse meu Linkedin">
-                <i class="fa-brands fa-linkedin"
-                    style="font-size: 1.3rem; margin-left: 8px; vertical-align: middle; color: #0077b5;"></i>
+                <i class="fa-brands fa-linkedin icon-social icon-linkedin"></i>
             </a>
         </p>
     </footer>
 
-    <script src="./assets/scripts/app.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>

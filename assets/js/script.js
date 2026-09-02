@@ -43,7 +43,7 @@ const UNIT_CONVERSIONS = {
  * 2. MONITORES DE EVENTO
  * =========================================================================
  */
-document.getElementById('btnPesquisar').addEventListener('click', executarBusca);
+document.getElementById('btn-pesquisar').addEventListener('click', executarBusca);
 
 document.getElementById('pesquisaPokemon').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
@@ -59,7 +59,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-document.getElementById('btnLimpar').addEventListener('click', clean);
+document.getElementById('btn-limpar').addEventListener('click', clean);
 
 /**
  * =========================================================================
@@ -76,11 +76,11 @@ function validarPesquisa(nomePokemon) {
     const regex = /^[a-zA-Z0-9çáãéêíóôõú-]+$/i;
 
     if (!nomePokemon) {
-        exibirErro("Pesquisa inválida! Digite o nome do Pokémon ou o número da Pokédex.");
+        exibirErro('Pesquisa inválida! Digite o nome do Pokémon ou o número da Pokédex.');
         return false;
     }
     if (!regex.test(nomePokemon)) {
-        exibirErro("Pesquisa inválida! Utilize apenas letras, números e hífens.");
+        exibirErro('Pesquisa inválida! Utilize apenas letras, números e hífens.');
         return false;
     }
     return true;
